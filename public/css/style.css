@@ -1,0 +1,72 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+.header {
+    border: 1px solid;
+}
+
+.header .headerFirst {
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.header .headerFirst .title {
+    margin-left: 30px;
+    width: 120px;
+}
+
+.header .headerFirst .menu {
+    margin-right: 30px;
+}
+
+.body {
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.body .content {
+    padding: 10px;
+}
+/**/
+.error-message {
+    color: red;
+}
+
+/**/
+.content .block {
+    width: 240px;
+    height: 360px;
+    margin: 27px;
+    margin-bottom: 0;
+    border: 1px solid;
+    float: left;
+}
+
+.content .block .photo > img {
+    width: 100%;
+}
+
+.content .block .text {
+    padding: 5px 0 0 0;
+    background-color: #e9e4e5;
+}
+
+.content .block .text div > span {
+    padding: 5px 0 0 10px;
+}
+/* User */
+
+.registration-form {
+    width: 300px;
+}
+
+.registration-form input {
+    float: right;
+}
+/*
+.registration-form span {
+    text-align: right;
+}
+*/
