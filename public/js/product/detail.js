@@ -9,6 +9,7 @@ $(document).ready(function(){
             $('.error-message').html('');
             $.post('/ajaxAddComment', {'comment': $('[name=comment]').val(), 'product_id': productID}, function(answ){
                 if(answ == 1){
+                    $('[name=comment]').val('');
                     getComments();
                 } else {
                     if(answ.comment !== undefined) $('.error-message.comment').html(answ.comment.join(', '));
