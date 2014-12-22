@@ -1,7 +1,8 @@
 @extends('master')
 
 @section('content')
-    <form class="registration-form">
+    <form class="form">
+        <h3>Registration</h3>
         <p>
             <span>Name: </span>
             <input type="text" name="name">
@@ -22,10 +23,10 @@
             <input type="password" name="password_confirmation">
             <div class="error-message password_confirmation"></div>
         </p>
-        <p><a href="#" id="send-registration">Registration</a></p>
+        <p><a href="#" id="send">Registration</a></p>
     </form>
 @stop
 
 @section('javascript')
-    {{ HTML::script('js/registration.js') }}
+    {{ HTML::script('js/user/registration.js') }}
 @stop

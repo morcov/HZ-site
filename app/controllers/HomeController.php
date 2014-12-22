@@ -1,5 +1,6 @@
 <?php
 
+use Cartalyst\Sentry\Sentry;
 class HomeController extends BaseController {
 
 	/*
@@ -16,8 +17,7 @@ class HomeController extends BaseController {
 	*/
 
 	public function index() {
-//		print_r(User::getAllUser());
-		return View::make('home.index');
+		return View::make('home.index')->with('products', Product::getAll());
 	}
 
 }

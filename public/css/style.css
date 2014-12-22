@@ -17,8 +17,24 @@
     width: 120px;
 }
 
+.header .headerFirst .title a {
+   color: #000000;
+}
+
+.header .headerFirst .title a:hover {
+   color: #000000;
+    text-decoration: none;
+}
+
+.header .headerFirst .user-login {
+    float: right;
+    margin-top: -40px;
+    width: 300px;
+    text-align: right;
+}
+
 .header .headerFirst .menu {
-    margin-right: 30px;
+    margin-left: 30px;
 }
 
 .body {
@@ -58,11 +74,11 @@
 }
 /* User */
 
-.registration-form {
+.form {
     width: 300px;
 }
 
-.registration-form input {
+.form input {
     float: right;
 }
 /*

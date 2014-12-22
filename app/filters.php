@@ -13,7 +13,8 @@
 
 App::before(function($request)
 {
-	//
+	View::share('isLogin', User::isLogin());
+	View::share('currentUser', User::getCurrentUser());
 });
 
 
