@@ -37,9 +37,9 @@ class UserController extends BaseController {
 	/**
 	 * @return array|\Illuminate\Support\MessageBag|int|string
      */
-	public function ajaxRegistrationUser() {
+	public function registrationUser() {
 		$validator = Validator::make(
-			$_POST,
+			$_REQUEST,
 			array(
 				'name' => 'required',
 				'email' => 'required|email|unique:users',
@@ -51,7 +51,7 @@ class UserController extends BaseController {
 		if ($validator->fails()) {
 			return $validator->messages();
 		} else {
-			$result = User::registration($_POST);
+			$result = User::registration($_REQUEST);
 			if($result == 1)
 				return $result;
 			else
@@ -63,9 +63,9 @@ class UserController extends BaseController {
 	/**
 	 * @return array|\Illuminate\Support\MessageBag|int|string
      */
-	public function ajaxLoginUser() {
+	public function loginUser() {
 		$validator = Validator::make(
-			$_POST,
+			$_REQUEST,
 			array(
 				'email' => 'required|email',
 				'password' => 'required|min:6',
@@ -75,7 +75,7 @@ class UserController extends BaseController {
 		if ($validator->fails()) {
 			return $validator->messages();
 		} else {
-			$result = User::login($_POST);
+			$result = User::login($_REQUEST);
 			if($result == 1)
 				return $result;
 			else

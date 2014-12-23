@@ -14,19 +14,33 @@ Route::pattern('id', '[0-9]+');
 
 
 Route::get('/', 'HomeController@index');
-Route::get('/test', 'HomeController@test');
 
+//USER
 Route::get('/registration', 'UserController@registration');
 Route::get('/login', 'UserController@login');
 Route::get('/logout', 'UserController@logout');
 
-Route::post('/ajaxRegistrationUser', 'UserController@ajaxRegistrationUser');
-Route::post('/ajaxLoginUser', 'UserController@ajaxLoginUser');
+Route::post('/registration', 'UserController@registrationUser');
+Route::post('/login', 'UserController@loginUser');
 
-
+//PRODUCT
 Route::get('/product/add', 'ProductController@add');
 Route::get('/product/{id}', 'ProductController@detail');
-Route::post('/ajaxAddProduct', 'ProductController@ajaxAddProduct');
-Route::post('/ajaxAddComment', 'ProductController@ajaxAddComment');
-Route::post('/ajaxDeleteComment', 'ProductController@ajaxDeleteComment');
-Route::post('/ajaxGetComments', 'ProductController@ajaxGetComments');
+Route::post('/product', 'ProductController@addProduct');
+
+Route::get('/comment', 'ProductController@getComments');
+Route::post('/comment', 'ProductController@addComment');
+Route::put('/comment', 'ProductController@deleteComment');
+Route::delete('/comment', 'ProductController@deleteComment');
+
+//TESTING
+Route::get('/test', 'HomeController@test');
+Route::any('form-submit', function(){
+    if (Input::hasFile('file')) {
+        $file            = Input::file('file');
+        $destinationPath = public_path().'/files/';
+        $filename        = str_random(6) . '_' . $file->getClientOriginalName();
+        $uploadSuccess   = $file->move($destinationPath, $filename);
+        return $file->getClientOriginalName();
+    }
+});

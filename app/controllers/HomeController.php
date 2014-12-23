@@ -21,12 +21,7 @@ class HomeController extends BaseController {
 	}
 
 	public function test() {
-		$f = "select comments.*, users.first_name
-				from users, comments
-				where users.id = comments.user_id and product_id = 4 and comments.enabled = 1
-				order by comments.created_at desc";
-
-		print_r(Comment::test());
+		return View::make('home.test');
 	}
 
 

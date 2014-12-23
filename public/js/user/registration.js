@@ -6,7 +6,7 @@ $(document).ready(function(){
     $('#send').click(function(event){
         event.preventDefault();
         $('.error-message').html('');
-        $.post('/ajaxRegistrationUser', $('.form').serializeArray(), function(answ){
+        $.post('/registration', $('.form').serializeArray(), function(answ){
             if(answ == 1){
                 redirectTo('/');
             } else {

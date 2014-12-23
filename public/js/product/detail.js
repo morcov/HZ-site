@@ -7,7 +7,7 @@ $(document).ready(function(){
         $('#send-comment').click(function(event){
             event.preventDefault();
             $('.error-message').html('');
-            $.post('/ajaxAddComment', {'comment': $('[name=comment]').val(), 'product_id': productID}, function(answ){
+            $.post('/comment', {'comment': $('[name=comment]').val(), 'product_id': productID}, function(answ){
                 if(answ == 1){
                     $('[name=comment]').val('');
                     getComments();
@@ -19,14 +19,19 @@ $(document).ready(function(){
 
     $(document).on('click', '.delete-comment', function(event){
         event.preventDefault();
-        $.post('/ajaxDeleteComment', {'comment_id': $(this).parent().parent().parent().attr('comment-id')}, function(answ){
-                getComments();
-        }, 'json')
+        $.ajax({
+            type: "DELETE",
+            url: "/comment",
+            data: {'comment_id': $(this).parent().parent().parent().attr('comment-id')},
+            success: function(msg){
+               getComments();
+            }
+        });
     });
 });
 
 function getComments(){
-    $.post('/ajaxGetComments', {'product_id': productID}, function(answ){
+    $.get('/comment', {'product_id': productID}, function(answ){
         $('.comments').html(answ);
     })
 }
