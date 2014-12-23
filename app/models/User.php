@@ -119,6 +119,9 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 			return false;
 	}
 
+	/**
+	 * @return \Cartalyst\Sentry\Users\UserInterface
+     */
 	public static function getCurrentUser(){
 		return Sentry::getUser();
 	}

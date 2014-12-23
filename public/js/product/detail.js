@@ -2,7 +2,7 @@
  * Created by morcov on 22.12.14.
  */
 $(document).ready(function(){
-    getComments()
+    getComments();
 
         $('#send-comment').click(function(event){
             event.preventDefault();
@@ -16,6 +16,13 @@ $(document).ready(function(){
                 }
             }, 'json')
         });
+
+    $(document).on('click', '.delete-comment', function(event){
+        event.preventDefault();
+        $.post('/ajaxDeleteComment', {'comment_id': $(this).parent().parent().parent().attr('comment-id')}, function(answ){
+                getComments();
+        }, 'json')
+    });
 });
 
 function getComments(){

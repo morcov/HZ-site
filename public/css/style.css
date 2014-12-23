@@ -45,6 +45,15 @@
 .body .content {
     padding: 10px;
 }
+
+.body .content .content-blocks {
+    width: 100%;
+    max-height: 1200px;
+}
+
+.body .content .pagination-block{
+    margin: 30px 0 auto;
+}
 /**/
 .error-message {
     color: red;

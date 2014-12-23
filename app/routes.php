@@ -14,6 +14,7 @@ Route::pattern('id', '[0-9]+');
 
 
 Route::get('/', 'HomeController@index');
+Route::get('/test', 'HomeController@test');
 
 Route::get('/registration', 'UserController@registration');
 Route::get('/login', 'UserController@login');
@@ -27,4 +28,5 @@ Route::get('/product/add', 'ProductController@add');
 Route::get('/product/{id}', 'ProductController@detail');
 Route::post('/ajaxAddProduct', 'ProductController@ajaxAddProduct');
 Route::post('/ajaxAddComment', 'ProductController@ajaxAddComment');
+Route::post('/ajaxDeleteComment', 'ProductController@ajaxDeleteComment');
 Route::post('/ajaxGetComments', 'ProductController@ajaxGetComments');

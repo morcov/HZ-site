@@ -14,14 +14,25 @@ class Product extends Eloquent implements UserInterface, RemindableInterface {
 
 	use UserTrait, RemindableTrait;
 
+	/**
+	 * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
 	public static function getAll(){
-		return Product::orderBy('updated_at', 'DESC')->get();
+		return Product::orderBy('updated_at', 'DESC')->paginate(8);
 	}
 
+	/**
+	 * @param $id
+	 * @return \Illuminate\Support\Collection|null|static
+     */
 	public static function getByID($id){
 		return Product::find($id);
 	}
 
+	/**
+	 * @param $data
+	 * @return int|string
+     */
 	public static function add($data){
 		try{
 			$product = new Product();

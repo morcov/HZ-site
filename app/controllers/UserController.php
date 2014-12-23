@@ -1,7 +1,13 @@
 <?php
 
+/**
+ * Class UserController
+ */
 class UserController extends BaseController {
 
+	/**
+	 * @return \Illuminate\View\View
+     */
 	public function registration() {
 		if(User::isLogin())
 			header('location: /');
@@ -9,6 +15,9 @@ class UserController extends BaseController {
 		return View::make('user.registration');
 	}
 
+	/**
+	 * @return \Illuminate\View\View
+     */
 	public function login() {
 		if(User::isLogin())
 			header('location: /');
@@ -16,12 +25,18 @@ class UserController extends BaseController {
 		return View::make('user.login');
 	}
 
+	/**
+	 *
+     */
 	public function logout() {
 		User::logout();
 		header('location: /');
 	}
 
 
+	/**
+	 * @return array|\Illuminate\Support\MessageBag|int|string
+     */
 	public function ajaxRegistrationUser() {
 		$validator = Validator::make(
 			$_POST,
@@ -45,6 +60,9 @@ class UserController extends BaseController {
 
 	}
 
+	/**
+	 * @return array|\Illuminate\Support\MessageBag|int|string
+     */
 	public function ajaxLoginUser() {
 		$validator = Validator::make(
 			$_POST,

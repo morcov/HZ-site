@@ -8,6 +8,9 @@
 
 class ProductController extends BaseController {
 
+    /**
+     * @return \Illuminate\View\View
+     */
     public function add(){
         if(!User::isLogin())
             header('location: /');
@@ -15,6 +18,10 @@ class ProductController extends BaseController {
         return View::make('product.add');
     }
 
+    /**
+     * @param $id
+     * @return $this
+     */
     public function detail($id){
 //        print_r('<pre>');
 //        print_r(Comment::getByProductID(4));
@@ -22,6 +29,9 @@ class ProductController extends BaseController {
         return View::make('product.detail')->with('product', Product::getByID($id));
     }
 
+    /**
+     * @return array|\Illuminate\Support\MessageBag|int|string
+     */
     public function ajaxAddProduct(){
 
         $validator = Validator::make(
@@ -49,6 +59,9 @@ class ProductController extends BaseController {
         }
     }
 
+    /**
+     * @return array|\Illuminate\Support\MessageBag|int|string
+     */
     public function ajaxAddComment(){
 
         $validator = Validator::make(
@@ -73,6 +86,9 @@ class ProductController extends BaseController {
         }
     }
 
+    /**
+     * @return $this|null
+     */
     public function ajaxGetComments(){
         $validator = Validator::make(
             $_POST,
@@ -85,6 +101,24 @@ class ProductController extends BaseController {
             return null;
         } else {
             return View::make('product.comments')->with('comments', Comment::getByProductID($_POST['product_id']));
+        }
+    }
+
+    /**
+     * @return int
+     */
+    public function ajaxDeleteComment(){
+        $validator = Validator::make(
+            $_POST,
+            array(
+                'comment_id' => 'integer|required',
+            )
+        );
+
+        if ($validator->fails()) {
+            return 0;
+        } else {
+            return Comment::remove($_POST['comment_id']);
         }
     }
 }
