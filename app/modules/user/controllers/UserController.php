@@ -9,14 +9,14 @@ class UserController extends BaseController {
 	 * @return \Illuminate\View\View
      */
 	public function registration() {
-		return View::make('user.registration');
+		return View::make('user::registration');
 	}
 
 	/**
 	 * @return \Illuminate\View\View
      */
 	public function login() {
-		return View::make('user.login');
+		return View::make('user::login');
 	}
 
 	/**

@@ -12,33 +12,18 @@
 */
 Route::pattern('id', '[0-9]+');
 
-Route::group(array('before' => 'NotLogged'), function()
-{
-    Route::get('/product/add', 'ProductController@add');
-    Route::get('/logout', 'UserController@logout');
-});
-
-Route::group(array('before' => 'loggedInFor'), function()
-{
-    Route::get('/registration', 'UserController@registration');
-    Route::get('/login', 'UserController@login');
-});
-
 Route::get('/', 'HomeController@index');
 
-//USER
+//FILTERS
+Route::filter('NotLogged', function(){
+    if(!User::isLogin())
+        header('location: '.action('UserController@login'));
+});
 
-Route::post('/registration', 'UserController@registrationUser');
-Route::post('/login', 'UserController@loginUser');
-
-//PRODUCT
-Route::get('/product/{id}', 'ProductController@detail');
-Route::post('/product', 'ProductController@addProduct');
-
-Route::get('/comment', 'ProductController@getComments');
-Route::post('/comment', 'ProductController@addComment');
-Route::put('/comment', 'ProductController@deleteComment');
-Route::delete('/comment', 'ProductController@deleteComment');
+Route::filter('loggedInFor', function(){
+    if(User::isLogin())
+        header('location: '.action('HomeController@index'));
+});
 
 //TESTING
 Route::get('/test', 'HomeController@test');
@@ -52,13 +37,3 @@ Route::any('form-submit', function(){
     }
 });
 
-//FILTERS
-Route::filter('NotLogged', function(){
-    if(!User::isLogin())
-        header('location: '.action('UserController@login'));
-});
-
-Route::filter('loggedInFor', function(){
-    if(User::isLogin())
-        header('location: '.action('HomeController@index'));
-});

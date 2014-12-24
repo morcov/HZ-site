@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "09ffcaca16fe2070b38034191d506a32",
+    "hash": "6e6a8437f1c7b74acdd30d73b20db0ce",
     "packages": [
         {
             "name": "barryvdh/laravel-ide-helper",
@@ -217,6 +217,51 @@
             "time": "2014-03-12 00:05:31"
         },
         {
+            "name": "creolab/laravel-modules",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/creolab/laravel-modules.git",
+                "reference": "6e51036302cae60381352e10a3c32bc12efe979f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/creolab/laravel-modules/zipball/6e51036302cae60381352e10a3c32bc12efe979f",
+                "reference": "6e51036302cae60381352e10a3c32bc12efe979f",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "~4",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "way/generators": "~2"
+            },
+            "suggest": {
+                "way/generators": "Required for modules:generate functionality."
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Creolab\\LaravelModules\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Boris Strahija",
+                    "email": "bstrahija@gmail.com"
+                }
+            ],
+            "description": "Application specific modules in Laravel 4",
+            "homepage": "http://creolab.hr",
+            "keywords": [
+                "laravel",
+                "modules"
+            ],
+            "time": "2014-11-29 10:08:38"
+        },
+        {
             "name": "d11wtq/boris",
             "version": "v1.0.8",
             "source": {
@@ -400,16 +445,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v4.2.13",
+            "version": "v4.2.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "a8104d53fef0582a8e93b33f424eafd4bd5c7989"
+                "reference": "31fe6a5747bbe3c2df21dc4cc8f291e75ab6144f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/a8104d53fef0582a8e93b33f424eafd4bd5c7989",
-                "reference": "a8104d53fef0582a8e93b33f424eafd4bd5c7989",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/31fe6a5747bbe3c2df21dc4cc8f291e75ab6144f",
+                "reference": "31fe6a5747bbe3c2df21dc4cc8f291e75ab6144f",
                 "shasum": ""
             },
             "require": {
@@ -511,7 +556,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2014-12-21 20:31:14"
+            "time": "2014-12-22 20:56:10"
         },
         {
             "name": "monolog/monolog",
@@ -1900,7 +1945,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "creolab/laravel-modules": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

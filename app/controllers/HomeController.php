@@ -17,11 +17,11 @@ class HomeController extends BaseController {
 	*/
 
 	public function index() {
-		return View::make('home.index')->with('products', Product::getAll());
+		return View::make('index')->with('products', Product::getAll());
 	}
 
 	public function test() {
-		return View::make('home.test');
+		return View::make('test');
 	}
 
 

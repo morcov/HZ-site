@@ -12,7 +12,7 @@ class ProductController extends BaseController {
      * @return \Illuminate\View\View
      */
     public function add(){
-        return View::make('product.add');
+        return View::make('product::add');
     }
 
     /**
@@ -20,7 +20,7 @@ class ProductController extends BaseController {
      * @return $this
      */
     public function detail($id){
-        return View::make('product.detail')->with('product', Product::getByID($id));
+        return View::make('product::detail')->with('product', Product::getByID($id));
     }
 
     /**

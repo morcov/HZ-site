@@ -1,7 +1,7 @@
 <?php
 /**
  * An helper file for Laravel 4, to provide autocomplete information to your IDE
- * Generated for Laravel 4.2.13 on 2014-12-22.
+ * Generated for Laravel 4.2.16 on 2014-12-24.
  *
  * @author Barry vd. Heuvel <barryvdh@gmail.com>
  * @see https://github.com/barryvdh/laravel-ide-helper
@@ -2716,7 +2716,6 @@ namespace {
          *
          * @param string $key
          * @return void 
-         * @throws \Illuminate\Encryption\InvalidKeyException
          * @static 
          */
         public static function setKey($key){
