@@ -1,5 +1,9 @@
 @extends('master')
 
+@section('title')
+    Product "{{ $product->name }}"
+@stop
+
 @section('content')
     <div class="form">
         <h3>Product "{{ $product->name }}"</h3>
@@ -47,7 +51,9 @@
             <p><a href="#" id="send-comment">Add comment</a></p>
         </form>
     @endif
-        <div class="comments"></div>
+        <div class="comments">
+            {{ $comments }}
+        </div>
         -----------------------------------------------
 
         <p>{{ HTML::linkAction('ProductController@index', 'Back') }}</p>

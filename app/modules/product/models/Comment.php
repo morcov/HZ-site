@@ -27,15 +27,6 @@ class Comment extends Eloquent implements UserInterface, RemindableInterface {
 				get();
 	}
 
-
-	/**
-	 * @param $id
-	 * @return \Illuminate\Support\Collection|null|static
-     */
-	public static function getByID($id){
-		return Product::find($id);
-	}
-
 	/**
 	 * @param $data
 	 * @return int|string

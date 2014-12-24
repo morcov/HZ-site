@@ -27,7 +27,9 @@ class ProductController extends BaseController {
      * @return $this
      */
     public function detail($id){
-        return View::make('product::detail')->with('product', Product::getByID($id));
+        return View::make('product::detail')
+            ->with('product', Product::getByID($id))
+            ->nest('comments', 'product::comments', array('comments' => Comment::getByProductID($id)));
     }
 
     /**

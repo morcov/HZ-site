@@ -1,5 +1,9 @@
 @extends('master')
 
+@section('title')
+    Home
+@stop
+
 @section('content')
     <div class="content-blocks">
         @foreach($products as $product)

@@ -13,16 +13,6 @@
 //PATTERN
 Route::pattern('id', '[0-9]+');
 
-//FILTERS
-Route::filter('NotLogged', function(){
-    if(!User::isLogin())
-        header('location: '.action('UserController@login'));
-});
-
-Route::filter('loggedInFor', function(){
-    if(User::isLogin())
-        header('location: '.action('ProductController@index'));
-});
 
 //TESTING
 Route::get('/test', 'HomeController@test');

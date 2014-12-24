@@ -1,4 +1,8 @@
-{{--@extends('master')--}}
+@extends('master')
+
+@section('title')
+    Test
+@stop
 
 @section('content')
     {{ Form::open(array('url'=>'form-submit','files'=>true)) }}

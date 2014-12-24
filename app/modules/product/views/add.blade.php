@@ -1,5 +1,9 @@
 @extends('master')
 
+@section('title')
+    Add product
+@stop
+
 @section('content')
     <form class="form">
         <h3>Add product</h3>

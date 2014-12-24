@@ -2,7 +2,7 @@
  * Created by morcov on 22.12.14.
  */
 $(document).ready(function(){
-    getComments();
+    //getComments();
 
         $('#send-comment').click(function(event){
             event.preventDefault();

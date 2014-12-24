@@ -1,5 +1,9 @@
 @extends('master')
 
+@section('title')
+    Registration
+@stop
+
 @section('content')
     <form class="form">
         <h3>Registration</h3>
