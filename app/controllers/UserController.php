@@ -9,9 +9,6 @@ class UserController extends BaseController {
 	 * @return \Illuminate\View\View
      */
 	public function registration() {
-		if(User::isLogin())
-			header('location: /');
-
 		return View::make('user.registration');
 	}
 
@@ -19,9 +16,6 @@ class UserController extends BaseController {
 	 * @return \Illuminate\View\View
      */
 	public function login() {
-		if(User::isLogin())
-			header('location: /');
-
 		return View::make('user.login');
 	}
 

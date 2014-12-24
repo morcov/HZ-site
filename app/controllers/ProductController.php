@@ -12,9 +12,6 @@ class ProductController extends BaseController {
      * @return \Illuminate\View\View
      */
     public function add(){
-        if(!User::isLogin())
-            header('location: '.action('UserController@login'));
-
         return View::make('product.add');
     }
 
