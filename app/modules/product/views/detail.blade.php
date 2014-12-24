@@ -50,7 +50,7 @@
         <div class="comments"></div>
         -----------------------------------------------
 
-        <p>{{ HTML::linkAction('HomeController@index', 'Back') }}</p>
+        <p>{{ HTML::linkAction('ProductController@index', 'Back') }}</p>
     </div>
 @stop
 

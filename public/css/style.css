@@ -3,6 +3,10 @@
     margin: 0;
 }
 
+.clear{
+    clear: both;
+}
+
 .header {
     border: 1px solid;
 }
@@ -52,7 +56,17 @@
 }
 
 .body .content .pagination-block{
-    margin: 30px 0 auto;
+    position: relative;
+    left: 50%;
+    float: left;
+    margin: 0 auto;
+    clear: both;
+}
+
+.pagination-block .pagination{
+    position: relative;
+    right: 50%;
+    float: right;
 }
 /**/
 .error-message {

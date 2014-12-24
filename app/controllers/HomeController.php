@@ -16,9 +16,9 @@ class HomeController extends BaseController {
 	|
 	*/
 
-	public function index() {
-		return View::make('index')->with('products', Product::getAll());
-	}
+//	public function index() {
+//		return View::make('index')->with('products', Product::getAll());
+//	}
 
 	public function test() {
 		return View::make('test');

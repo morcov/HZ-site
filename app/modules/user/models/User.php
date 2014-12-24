@@ -105,7 +105,6 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	 *
      */
 	public static function logout(){
-//		unset($_SESSION['cartalyst_sentry']);
 		Sentry::logout();
 	}
 
@@ -113,10 +112,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	 * @return bool
      */
 	public static function isLogin(){
-		if(Sentry::getUser())
-			return true;
-		else
-			return false;
+		return Sentry::check();
 	}
 
 	/**

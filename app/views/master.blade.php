@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Site</title>
+    <title>@yield('title')</title>
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet">
     {{ HTML::style('css/style.css') }}
     @yield('css')
@@ -15,7 +15,7 @@
     <div class="header">
         <div class="headerFirst">
             <div class="title">
-                <h1>{{ HTML::linkAction('HomeController@index', 'HOME') }}</h1>
+                <h1>{{ HTML::linkAction('ProductController@index', 'HOME') }}</h1>
             </div>
             <div class="user-login">
                 @if($isLogin)
@@ -27,7 +27,7 @@
                 @endif
             </div>
             <div class="menu">
-                <span>{{ HTML::linkAction('HomeController@index', 'Home') }}</span> |
+                <span>{{ HTML::linkAction('ProductController@index', 'Home') }}</span> |
                 <span>{{ HTML::linkAction('ProductController@add', 'Add product') }}</span>
             </div>
         </div>

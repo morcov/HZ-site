@@ -9,6 +9,13 @@
 class ProductController extends BaseController {
 
     /**
+     * @return $this
+     */
+    public function index() {
+		return View::make('product::index')->with('products', Product::getAll());
+	}
+
+    /**
      * @return \Illuminate\View\View
      */
     public function add(){
@@ -86,7 +93,7 @@ class ProductController extends BaseController {
         if ($validator->fails()) {
             return null;
         } else {
-            return View::make('product.comments')->with('comments', Comment::getByProductID($data['product_id']));
+            return View::make('product::comments')->with('comments', Comment::getByProductID($data['product_id']));
         }
     }
 

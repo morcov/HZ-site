@@ -14,5 +14,6 @@
             </div>
         @endforeach
     </div>
+    <div class="clear"></div>
     <div class="pagination-block">{{ $products->links() }}</div>
 @stop

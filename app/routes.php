@@ -10,9 +10,8 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
+//PATTERN
 Route::pattern('id', '[0-9]+');
-
-Route::get('/', 'HomeController@index');
 
 //FILTERS
 Route::filter('NotLogged', function(){
@@ -22,7 +21,7 @@ Route::filter('NotLogged', function(){
 
 Route::filter('loggedInFor', function(){
     if(User::isLogin())
-        header('location: '.action('HomeController@index'));
+        header('location: '.action('ProductController@index'));
 });
 
 //TESTING
