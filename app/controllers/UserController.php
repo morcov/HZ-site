@@ -38,8 +38,9 @@ class UserController extends BaseController {
 	 * @return array|\Illuminate\Support\MessageBag|int|string
      */
 	public function registrationUser() {
+		$data = Input::all();
 		$validator = Validator::make(
-			$_REQUEST,
+			$data,
 			array(
 				'name' => 'required',
 				'email' => 'required|email|unique:users',
@@ -51,7 +52,7 @@ class UserController extends BaseController {
 		if ($validator->fails()) {
 			return $validator->messages();
 		} else {
-			$result = User::registration($_REQUEST);
+			$result = User::registration($data);
 			if($result == 1)
 				return $result;
 			else
@@ -64,8 +65,9 @@ class UserController extends BaseController {
 	 * @return array|\Illuminate\Support\MessageBag|int|string
      */
 	public function loginUser() {
+		$data = Input::all();
 		$validator = Validator::make(
-			$_REQUEST,
+			$data,
 			array(
 				'email' => 'required|email',
 				'password' => 'required|min:6',
@@ -75,7 +77,7 @@ class UserController extends BaseController {
 		if ($validator->fails()) {
 			return $validator->messages();
 		} else {
-			$result = User::login($_REQUEST);
+			$result = User::login($data);
 			if($result == 1)
 				return $result;
 			else

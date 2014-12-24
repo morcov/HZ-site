@@ -15,20 +15,20 @@
     <div class="header">
         <div class="headerFirst">
             <div class="title">
-                <h1><a href="/">HOME</a></h1>
+                <h1>{{ HTML::linkAction('HomeController@index', 'HOME') }}</h1>
             </div>
             <div class="user-login">
                 @if($isLogin)
                     Hello {{ $currentUser->first_name }}!!! |
-                    <a href="/logout">Logout</a>
+                    {{ HTML::linkAction('UserController@logout', 'Logout') }}
                 @else
-                    <a href="/login">Login</a> |
-                    <a href="/registration">Registration</a>
+                    {{ HTML::linkAction('UserController@login', 'Login') }} |
+                    {{ HTML::linkAction('UserController@registration', 'Registration') }}
                 @endif
             </div>
             <div class="menu">
-                <span><a href="/">Home</a></span> |
-                <span><a href="/product/add">Add product</a></span>
+                <span>{{ HTML::linkAction('HomeController@index', 'Home') }}</span> |
+                <span>{{ HTML::linkAction('ProductController@add', 'Add product') }}</span>
             </div>
         </div>
     </div>

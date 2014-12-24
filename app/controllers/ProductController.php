@@ -13,7 +13,7 @@ class ProductController extends BaseController {
      */
     public function add(){
         if(!User::isLogin())
-            header('location: /');
+            header('location: '.action('UserController@login'));
 
         return View::make('product.add');
     }
@@ -30,9 +30,9 @@ class ProductController extends BaseController {
      * @return array|\Illuminate\Support\MessageBag|int|string
      */
     public function addProduct(){
-
+        $data = Input::all();
         $validator = Validator::make(
-            $_POST,
+            $data,
             array(
                 'name' => 'required',
                 'name_en' => '',
@@ -47,7 +47,7 @@ class ProductController extends BaseController {
         if ($validator->fails()) {
             return $validator->messages();
         } else {
-            $result = Product::add($_POST);
+            $result = Product::add($data);
             return $result;
         }
     }
@@ -56,9 +56,9 @@ class ProductController extends BaseController {
      * @return array|\Illuminate\Support\MessageBag|int|string
      */
     public function addComment(){
-
+        $data = Input::all();
         $validator = Validator::make(
-            $_REQUEST,
+            $data,
             array(
                 'product_id' => 'integer|required',
                 'comment' => 'required',
@@ -68,7 +68,6 @@ class ProductController extends BaseController {
         if ($validator->fails()) {
             return $validator->messages();
         } else {
-            $data = $_REQUEST;
             $data['user_id'] = User::getCurrentUser()->getId();
             $result = Comment::add($data);
             return $result;
@@ -79,8 +78,9 @@ class ProductController extends BaseController {
      * @return $this|null
      */
     public function getComments(){
+        $data = Input::all();
         $validator = Validator::make(
-            $_REQUEST,
+            $data,
             array(
                 'product_id' => 'integer|required',
             )
@@ -89,7 +89,7 @@ class ProductController extends BaseController {
         if ($validator->fails()) {
             return null;
         } else {
-            return View::make('product.comments')->with('comments', Comment::getByProductID($_REQUEST['product_id']));
+            return View::make('product.comments')->with('comments', Comment::getByProductID($data['product_id']));
         }
     }
 
