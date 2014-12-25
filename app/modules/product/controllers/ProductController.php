@@ -11,14 +11,14 @@ class ProductController extends BaseController {
     /**
      * @return $this
      */
-    public function index() {
+    public function indexAction() {
 		return View::make('product::index')->with('products', Product::getAll());
 	}
 
     /**
      * @return \Illuminate\View\View
      */
-    public function add(){
+    public function addAction(){
         return View::make('product::add');
     }
 
@@ -26,7 +26,7 @@ class ProductController extends BaseController {
      * @param $id
      * @return $this
      */
-    public function detail($id){
+    public function detailAction($id){
         return View::make('product::detail')
             ->with('product', Product::getByID($id))
             ->nest('comments', 'product::comments', array('comments' => Comment::getByProductID($id)));
@@ -39,7 +39,7 @@ class ProductController extends BaseController {
         $data = Input::all();
         $validator = Validator::make(
             $data,
-            array(
+            [
                 'name' => 'required',
                 'name_en' => '',
                 'name_ua' => '',
@@ -47,14 +47,14 @@ class ProductController extends BaseController {
                 'time' => '',
                 'series' => 'integer',
                 'description' => '',
-            )
+            ]
         );
 
         if ($validator->fails()) {
-            return $validator->messages();
+            return Redirect::action('ProductController@addAction')->withInput($data)->withErrors($validator);
         } else {
-            $result = Product::add($data);
-            return $result;
+            Product::add($data);
+            return Redirect::to('/');
         }
     }
 
@@ -65,10 +65,10 @@ class ProductController extends BaseController {
         $data = Input::all();
         $validator = Validator::make(
             $data,
-            array(
+            [
                 'product_id' => 'integer|required',
                 'comment' => 'required',
-            )
+            ]
         );
 
         if ($validator->fails()) {
@@ -87,9 +87,9 @@ class ProductController extends BaseController {
         $data = Input::all();
         $validator = Validator::make(
             $data,
-            array(
+            [
                 'product_id' => 'integer|required',
-            )
+            ]
         );
 
         if ($validator->fails()) {
@@ -106,9 +106,9 @@ class ProductController extends BaseController {
         $data = Input::all();
         $validator = Validator::make(
             $data,
-            array(
+            [
                 'comment_id' => 'integer|required',
-            )
+            ]
         );
 
         if ($validator->fails()) {

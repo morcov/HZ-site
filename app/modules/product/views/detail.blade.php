@@ -56,7 +56,7 @@
         </div>
         -----------------------------------------------
 
-        <p>{{ HTML::linkAction('ProductController@index', 'Back') }}</p>
+        <p>{{ HTML::linkAction('ProductController@indexAction', 'Back') }}</p>
     </div>
 @stop
 

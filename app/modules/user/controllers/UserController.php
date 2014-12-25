@@ -8,21 +8,21 @@ class UserController extends BaseController {
 	/**
 	 * @return \Illuminate\View\View
      */
-	public function registration() {
+	public function registrationAction() {
 		return View::make('user::registration');
 	}
 
 	/**
 	 * @return \Illuminate\View\View
      */
-	public function login() {
+	public function loginAction() {
 		return View::make('user::login');
 	}
 
 	/**
 	 *
      */
-	public function logout() {
+	public function logoutAction() {
 		User::logout();
 		header('location: /');
 	}
@@ -31,26 +31,26 @@ class UserController extends BaseController {
 	/**
 	 * @return array|\Illuminate\Support\MessageBag|int|string
      */
-	public function registrationUser() {
+	public function registration() {
 		$data = Input::all();
 		$validator = Validator::make(
 			$data,
-			array(
+			[
 				'name' => 'required',
 				'email' => 'required|email|unique:users',
 				'password' => 'required|min:6|confirmed',
         		'password_confirmation' => 'required|min:6'
-			)
+			]
 		);
 
 		if ($validator->fails()) {
-			return $validator->messages();
+			return Redirect::to('/registration')->withInput($data)->withErrors($validator);
 		} else {
 			$result = User::registration($data);
 			if($result == 1)
-				return $result;
+				return Redirect::to('/');
 			else
-				return array('password' => [$result]);
+				return Redirect::to('/registration')->withInput($data)->withErrors(['password_confirmation' => $result]);
 		}
 
 	}
@@ -58,24 +58,24 @@ class UserController extends BaseController {
 	/**
 	 * @return array|\Illuminate\Support\MessageBag|int|string
      */
-	public function loginUser() {
+	public function login() {
 		$data = Input::all();
 		$validator = Validator::make(
 			$data,
-			array(
+			[
 				'email' => 'required|email',
 				'password' => 'required|min:6',
-			)
+			]
 		);
 
 		if ($validator->fails()) {
-			return $validator->messages();
+			return Redirect::to('/login')->withInput($data)->withErrors($validator);
 		} else {
 			$result = User::login($data);
 			if($result == 1)
-				return $result;
+				return Redirect::to('/');
 			else
-				return array('password' => [$result]);
+				return Redirect::to('/login')->withInput($data)->withErrors(['password' => $result]);
 		}
 
 	}
