@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="form">
-        <h3>{{ Lang::get('lang.Product name', ['name' => $product->name])  }}</h3><span>{{ HTML::link('/product/edit/'.$product->id, Lang::get('lang.Edit')) }}</span>
+        <h3>{{ Lang::get('lang.Product name', ['name' => $product->name])  }}</h3><span>{{ HTML::link('/product/'.$product->id.'/edit', Lang::get('lang.Edit')) }}</span>
         <p>
             <span>{{ Lang::get('lang.Name') }}: </span>{{ $product->name }}
         </p>
@@ -56,7 +56,7 @@
         </div>
         -----------------------------------------------
 
-        <p>{{ HTML::linkAction('ProductController@indexAction', Lang::get('lang.Back')) }}</p>
+        <p>{{ HTML::link('/', Lang::get('lang.Back')) }}</p>
     </div>
 @stop
 

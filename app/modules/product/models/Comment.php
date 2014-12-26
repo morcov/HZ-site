@@ -1,17 +1,11 @@
 <?php
 
-use Illuminate\Auth\UserTrait;
-use Illuminate\Auth\UserInterface;
-use Illuminate\Auth\Reminders\RemindableTrait;
-use Illuminate\Auth\Reminders\RemindableInterface;
+namespace App\Modules\Product\Models;
 
+use DB, Eloquent, Exception, Validator;
 
-/**
- * User
- *
- */
-class Comment extends Eloquent{
-
+class Comment extends Eloquent
+{
 	private static $commentRules = [
 		'product_id' => 'integer|required',
 		'comment' => 'required',
@@ -22,7 +16,8 @@ class Comment extends Eloquent{
 	 * @param $id
 	 * @return array|\Illuminate\Database\Eloquent\Collection|static[]
      */
-	public static function getByProductID($id){
+	public static function getByProductID($id)
+	{
 		$validator = Validator::make(
 			['id' => $id],
 			['id' => 'integer|required']
@@ -32,13 +27,12 @@ class Comment extends Eloquent{
 			return [];
 		}
 
-		return Comment::select('comments.*', 'users.first_name')->
-				leftJoin('users', 'users.id', '=', 'comments.user_id')->
-				where('product_id', '=', $id)->
-				where('comments.enabled', '=', 1)->
-				orderBy('comments.created_at', 'DESC')->
-				get();
-
+		return Comment::select('comments.*', 'users.first_name')
+			->leftJoin('users', 'users.id', '=', 'comments.user_id')
+			->where('product_id', '=', $id)
+			->where('comments.enabled', '=', 1)
+			->orderBy('comments.created_at', 'DESC')
+			->get();
 	}
 
 	/**

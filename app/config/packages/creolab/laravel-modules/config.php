@@ -37,6 +37,6 @@ return array(
 	/**
 	 * Debug mode
 	 */
-	'debug' => false,
+	'debug' => true,
 
 );

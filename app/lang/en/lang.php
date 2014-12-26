@@ -2,6 +2,7 @@
 
 return array(
     'Add product' => 'Add product',
+    'Edit product' => 'Edit product',
     'Home' => 'Home',
     'Logout' => 'Logout',
     'Login' => 'Login',

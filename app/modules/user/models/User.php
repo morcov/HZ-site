@@ -1,17 +1,23 @@
 <?php
 
-use Illuminate\Auth\UserTrait;
-use Illuminate\Auth\UserInterface;
-use Illuminate\Auth\Reminders\RemindableTrait;
-use Illuminate\Auth\Reminders\RemindableInterface;
+namespace App\Modules\User\Models;
 
+use Cartalyst\Sentry\Groups\GroupNotFoundException;
+use Cartalyst\Sentry\Throttling\UserBannedException;
+use Cartalyst\Sentry\Throttling\UserSuspendedException;
+use Cartalyst\Sentry\Users\LoginRequiredException;
+use Cartalyst\Sentry\Users\PasswordRequiredException;
+use Cartalyst\Sentry\Users\UserExistsException;
+use Cartalyst\Sentry\Users\UserNotActivatedException;
+use Cartalyst\Sentry\Users\UserNotFoundException;
+use Cartalyst\Sentry\Users\WrongPasswordException;
+use Eloquent, Exception, Validator, Sentry;
 
-/**
- * User
- *
- */
 class User extends Eloquent {
 
+	/**
+	 * @var array
+     */
 	private static $registrationRules = [
 		'name' => 'required',
 		'email' => 'required|email|unique:users',
@@ -19,6 +25,9 @@ class User extends Eloquent {
 		'password_confirmation' => 'required|min:6'
 	];
 
+	/**
+	 * @var array
+     */
 	private static $loginRules = [
 		'email' => 'required|email',
 		'password' => 'required|min:6',
@@ -53,19 +62,19 @@ class User extends Eloquent {
 //			// Assign the group to the user
 //			$user->addGroup($adminGroup);
 		}
-		catch (Cartalyst\Sentry\Users\LoginRequiredException $e)
+		catch (LoginRequiredException $e)
 		{
 			$registrationError = 'Login field is required.';
 		}
-		catch (Cartalyst\Sentry\Users\PasswordRequiredException $e)
+		catch (PasswordRequiredException $e)
 		{
 			$registrationError = 'Password field is required.';
 		}
-		catch (Cartalyst\Sentry\Users\UserExistsException $e)
+		catch (UserExistsException $e)
 		{
 			$registrationError = 'User with this login already exists.';
 		}
-		catch (Cartalyst\Sentry\Groups\GroupNotFoundException $e)
+		catch (GroupNotFoundException $e)
 		{
 			$registrationError = 'Group was not found.';
 		}
@@ -90,33 +99,33 @@ class User extends Eloquent {
 
 			return (object)['status' => true, 'user' => Sentry::getUser()];
 		}
-		catch (Cartalyst\Sentry\Users\LoginRequiredException $e)
+		catch (LoginRequiredException $e)
 		{
 			$loginError = 'Login field is required.';
 		}
-		catch (Cartalyst\Sentry\Users\PasswordRequiredException $e)
+		catch (PasswordRequiredException $e)
 		{
 			$loginError = 'Password field is required.';
 		}
-		catch (Cartalyst\Sentry\Users\WrongPasswordException $e)
+		catch (WrongPasswordException $e)
 		{
 			$loginError = 'Wrong password, try again.';
 		}
-		catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
+		catch (UserNotFoundException $e)
 		{
 			$loginError = 'User was not found.';
 		}
-		catch (Cartalyst\Sentry\Users\UserNotActivatedException $e)
+		catch (UserNotActivatedException $e)
 		{
 			$loginError = 'User is not activated.';
 		}
 
 // The following is only required if the throttling is enabled
-		catch (Cartalyst\Sentry\Throttling\UserSuspendedException $e)
+		catch (UserSuspendedException $e)
 		{
 			$loginError = 'User is suspended.';
 		}
-		catch (Cartalyst\Sentry\Throttling\UserBannedException $e)
+		catch (UserBannedException $e)
 		{
 			$loginError = 'User is banned.';
 		}

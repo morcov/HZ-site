@@ -1,8 +1,10 @@
 <?php
 
-/**
- * Class UserController
- */
+namespace App\Modules\User\Controllers;
+
+use App\Modules\User\Models\User;
+use BaseController, View, Redirect, Input;
+
 class UserController extends BaseController {
 
 	/**
@@ -24,7 +26,7 @@ class UserController extends BaseController {
      */
 	public function logoutAction() {
 		User::logout();
-		header('location: /');
+		return Redirect::to('/');
 	}
 
 	/**

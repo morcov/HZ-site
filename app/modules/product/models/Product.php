@@ -1,16 +1,11 @@
 <?php
 
-use Illuminate\Auth\UserTrait;
-use Illuminate\Auth\UserInterface;
-use Illuminate\Auth\Reminders\RemindableTrait;
-use Illuminate\Auth\Reminders\RemindableInterface;
+namespace App\Modules\Product\Models;
 
+use Eloquent, Exception, Validator;
 
-/**
- * User
- *
- */
-class Product extends Eloquent {
+class Product extends Eloquent
+{
 
 	public static $rules = [
 		'name' => 'required',
@@ -60,6 +55,34 @@ class Product extends Eloquent {
 			$product->save();
 
 			return (object)['status' => true, 'productID' => $product->id];
+		}catch (Exception $e){
+			return (object)['status' => false, 'errors' => ['name' => 'Fatal ERROR']];
+		}
+	}
+
+	/**
+	 * @param $data
+	 * @return int|string
+     */
+	public static function edit($id, $data){
+		try{
+			$validator = Validator::make( $data, Product::$rules);
+
+			if ($validator->fails()) {
+				return (object)['status' => false, 'errors' => $validator->messages()];
+			}
+
+			$product = Product::find($id);
+			$product -> name = $data['name'];
+			$product -> name_en = $data['name_en'];
+			$product -> name_ua = $data['name_ua'];
+			$product -> year = $data['year'];
+			$product -> time = $data['time'];
+			$product -> series = $data['series'];
+			$product -> description = $data['description'];
+			$product->save();
+
+			return (object)['status' => true, 'productID' => $id];
 		}catch (Exception $e){
 			return (object)['status' => false, 'errors' => ['name' => 'Fatal ERROR']];
 		}

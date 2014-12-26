@@ -1,21 +1,24 @@
 <?php
 
-Route::get('/', 'ProductController@indexAction');
+$prefix = 'App\Modules\Product\Controllers\\';
 
-Route::group(array('before' => 'NotLogged'), function() {
-    Route::get('/product/add', 'ProductController@addAction');
-    Route::get('/product/edit/{id}', 'ProductController@editAction');
-    Route::post('/product', 'ProductController@addProduct');
-    Route::put('/product', 'ProductController@editProduct');
+Route::get('/', $prefix . 'ProductController@indexAction');
 
-    Route::post('/comment', 'ProductController@addComment');
-    Route::put('/comment', 'ProductController@deleteComment');
-    Route::delete('/comment', 'ProductController@deleteComment');
+Route::group(array('before' => 'NotLogged'), function() use($prefix) {
+    Route::get('/product/add', $prefix . 'ProductController@addAction');
+    Route::post('/product/add', $prefix . 'ProductController@addProduct');
+
+    Route::get('/product/{id}/edit', $prefix . 'ProductController@editAction');
+    Route::post('/product/{id}/edit', $prefix . 'ProductController@editProduct');
+
+    Route::post('/comment', $prefix . 'CommentController@addComment');
+    Route::put('/comment', $prefix . 'CommentController@deleteComment');
+    Route::delete('/comment', $prefix . 'CommentController@deleteComment');
 });
 
-Route::get('/product/{id}', 'ProductController@detailAction');
+Route::get('/product/{id}', $prefix . 'ProductController@detailAction');
 
-Route::get('/comment', 'ProductController@getComments');
+Route::get('/comment', $prefix . 'CommentController@getComments');
 
 /*
  Route::group(array('prefix' => 'product'), function()

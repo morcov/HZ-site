@@ -11,6 +11,8 @@
 |
 */
 
+use App\Modules\User\Models\User;
+
 App::before(function($request) {
 	LocalController::setLocale();
 	View::share('locale', LocalController::localeTemplate());
@@ -26,12 +28,12 @@ App::after(function($request, $response) {
 
 Route::filter('NotLogged', function() {
 	if(!User::isLogin())
-		return Redirect::action('UserController@login');
+		return Redirect::to('/login');
 });
 
 Route::filter('loggedInFor', function() {
 	if(User::isLogin())
-		return Redirect::action('ProductController@index');
+		return Redirect::to('/');
 });
 /*
 |--------------------------------------------------------------------------

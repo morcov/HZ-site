@@ -1,14 +1,16 @@
 <?php
 
-Route::group(array('before' => 'NotLogged'), function() {
-    Route::get('/logout', 'UserController@logoutAction');
+$prefix = 'App\Modules\User\Controllers\\';
+
+Route::group(array('before' => 'NotLogged'), function() use ($prefix) {
+    Route::get('/logout', $prefix . 'UserController@logoutAction');
 });
 
-Route::group(array('before' => 'loggedInFor'), function() {
-    Route::get('/registration', 'UserController@registrationAction');
-    Route::post('/registration', 'UserController@registration');
+Route::group(array('before' => 'loggedInFor'), function() use ($prefix) {
+    Route::get('/registration', $prefix . 'UserController@registrationAction');
+    Route::post('/registration', $prefix . 'UserController@registration');
 
-    Route::get('/login', 'UserController@loginAction');
-    Route::post('/login', 'UserController@login');
+    Route::get('/login', $prefix . 'UserController@loginAction');
+    Route::post('/login', $prefix . 'UserController@login');
 });
 

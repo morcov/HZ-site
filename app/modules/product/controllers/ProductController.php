@@ -1,24 +1,25 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: morcov
- * Date: 22.12.14
- * Time: 13:12
- */
 
-class ProductController extends BaseController {
+namespace App\Modules\Product\Controllers;
 
+use App\Modules\Product\Models\Product;
+use BaseController, View, Input, Redirect;
+
+class ProductController extends BaseController
+{
     /**
      * @return $this
      */
-    public function indexAction() {
+    public function indexAction()
+    {
 		return View::make('product::index')->with('products', Product::getAll());
 	}
 
     /**
      * @return \Illuminate\View\View
      */
-    public function addAction(){
+    public function addAction()
+    {
         return View::make('product::add');
     }
 
@@ -26,22 +27,23 @@ class ProductController extends BaseController {
      * @return \Illuminate\View\View
      */
     public function editAction($id){
-        return Redirect::to('/');
-        return View::make('product::edit')->with('input', Product::getByID($id));
+        return View::make('product::edit')->with('product', Product::getByID($id));
     }
+
 
     /**
      * @param $id
-     * @return $this
+     * @return $this|int
      */
     public function detailAction($id){
         return View::make('product::detail')
             ->with('product', Product::getByID($id))
-            ->nest('comments', 'product::comments', array('comments' => Comment::getByProductID($id)));
+            ->with('comments', (new CommentController())->getComments($id));
     }
 
+
     /**
-     * @return array|\Illuminate\Support\MessageBag|int|string
+     * @return $this|\Illuminate\Http\RedirectResponse
      */
     public function addProduct(){
         $data = Input::all();
@@ -54,42 +56,17 @@ class ProductController extends BaseController {
     }
 
     /**
-     * @return array|\Illuminate\Support\MessageBag|int|string
+     * @return array
      */
-    public function editProduct(){
+    public function editProduct($id){
         $data = Input::all();
-        return $data;
-    }
-
-    /**
-     * @return array|\Illuminate\Support\MessageBag|int|string
-     */
-    public function addComment(){
-        $data = Input::all();
-        $data['user_id'] = User::getUserID();
-
-        $result = Comment::add($data);
+        $result = Product::edit($id, $data);
         if($result->status){
-            return $result->commentID;
-        }else{
-            return $result->errors;
+            return Redirect::to('/product/'.$result->productID);
+        }else {
+            return Redirect::to('/product/' . $id . '/edit')->withInput($data)->withErrors($result->errors);
         }
     }
 
-    /**
-     * @return $this|null
-     */
-    public function getComments(){
-        $data = Input::all();
-        $result = Comment::getByProductID($data['product_id']);
-        return View::make('product::comments')->with('comments', $result);
-    }
 
-    /**
-     * @return int
-     */
-    public function deleteComment(){
-        $data = Input::all();
-        Response::json(Comment::remove($data['comment_id']));
-    }
 }
