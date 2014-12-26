@@ -4,6 +4,9 @@ Route::get('/', 'ProductController@indexAction');
 
 Route::group(array('before' => 'NotLogged'), function() {
     Route::get('/product/add', 'ProductController@addAction');
+    Route::get('/product/edit/{id}', 'ProductController@editAction');
+    Route::post('/product', 'ProductController@addProduct');
+    Route::put('/product', 'ProductController@editProduct');
 
     Route::post('/comment', 'ProductController@addComment');
     Route::put('/comment', 'ProductController@deleteComment');
@@ -11,7 +14,6 @@ Route::group(array('before' => 'NotLogged'), function() {
 });
 
 Route::get('/product/{id}', 'ProductController@detailAction');
-Route::post('/product', 'ProductController@addProduct');
 
 Route::get('/comment', 'ProductController@getComments');
 

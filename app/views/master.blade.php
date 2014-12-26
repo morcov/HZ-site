@@ -17,18 +17,21 @@
             <div class="title">
                 <h1>{{ HTML::link('/', 'HOME') }}</h1>
             </div>
+            <div class="locale">
+                {{ $locale }}
+            </div>
             <div class="user-login">
                 @if($isLogin)
-                    Hello {{ $currentUser->first_name }}!!! |
-                    {{ HTML::link('/logout', 'Logout') }}
+                    {{ Lang::get('lang.Hello user', ['name' => $currentUser->first_name]) }}!!! |
+                    {{ HTML::link('/logout', Lang::get('lang.Logout')) }}
                 @else
-                    {{ HTML::link('/login', 'Login') }} |
-                    {{ HTML::link('/registration', 'Registration') }}
+                    {{ HTML::link('/login', Lang::get('lang.Login')) }} |
+                    {{ HTML::link('/registration', Lang::get('lang.Registration')) }}
                 @endif
             </div>
             <div class="menu">
-                <span>{{ HTML::link('/', 'Home') }}</span> |
-                <span>{{ HTML::link('/product/add', 'Add product') }}</span>
+                <span>{{ HTML::link('/', Lang::get('lang.Home')) }}</span> |
+                <span>{{ HTML::link('/product/add', Lang::get('lang.Add product')) }}</span>
             </div>
         </div>
     </div>

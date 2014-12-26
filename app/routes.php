@@ -10,6 +10,9 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
+Route::any('/setLocale/{lang}', 'LocalController@changeLocale');
+
+
 //PATTERN
 Route::pattern('id', '[0-9]+');
 

@@ -10,21 +10,35 @@ use Illuminate\Auth\Reminders\RemindableInterface;
  * User
  *
  */
-class Comment extends Eloquent implements UserInterface, RemindableInterface {
+class Comment extends Eloquent{
 
-	use UserTrait, RemindableTrait;
+	private static $commentRules = [
+		'product_id' => 'integer|required',
+		'comment' => 'required',
+		'user_id' => 'integer|required'
+	];
 
 	/**
 	 * @param $id
 	 * @return array|\Illuminate\Database\Eloquent\Collection|static[]
      */
 	public static function getByProductID($id){
+		$validator = Validator::make(
+			['id' => $id],
+			['id' => 'integer|required']
+		);
+
+		if ($validator->fails()) {
+			return [];
+		}
+
 		return Comment::select('comments.*', 'users.first_name')->
 				leftJoin('users', 'users.id', '=', 'comments.user_id')->
 				where('product_id', '=', $id)->
 				where('comments.enabled', '=', 1)->
 				orderBy('comments.created_at', 'DESC')->
 				get();
+
 	}
 
 	/**
@@ -33,14 +47,21 @@ class Comment extends Eloquent implements UserInterface, RemindableInterface {
      */
 	public static function add($data){
 		try{
+			$validator = Validator::make( $data, Comment::$commentRules);
+
+			if ($validator->fails()) {
+				return (object)['status' => false, 'errors' => $validator->messages()];
+			}
+
 			$comment = new Comment();
-			foreach($data as $key=>$value)
-				$comment->$key = $value;
+			$comment -> product_id = $data['product_id'];
+			$comment -> comment = $data['comment'];
+			$comment -> user_id = $data['user_id'];
 			$comment->save();
 
-			return 1;
+			return (object)['status' => true, 'commentID' => $comment->id];
 		}catch (Exception $e){
-			return 'error';
+			return (object)['status' => false, 'errors' => ['comment' => 'Fatal ERROR']];
 		}
 	}
 
@@ -49,10 +70,26 @@ class Comment extends Eloquent implements UserInterface, RemindableInterface {
 	 * @return int
      */
 	public static function remove($id){
-		$comment = Comment::find($id);
-		$comment->enabled = 0;
-		$comment->save();
-		return 1;
+		try{
+			$validator = Validator::make(
+				array('id' => $id),
+				array('id' => 'integer|required')
+			);
+
+			if ($validator->fails()) {
+				return false;
+			}
+
+			$comment = Comment::find($id);
+			$comment->enabled = 0;
+			$comment->save();
+
+			return true;
+		}catch (Exception $e){
+			return false;
+		}
+
+
 	}
 
 	public static function test(){

@@ -37,6 +37,11 @@
     text-align: right;
 }
 
+.header .headerFirst .locale {
+    position: absolute;
+    margin: 0 0 0 1080px;
+}
+
 .header .headerFirst .menu {
     margin-left: 30px;
 }

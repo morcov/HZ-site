@@ -10,10 +10,19 @@ use Illuminate\Auth\Reminders\RemindableInterface;
  * User
  *
  */
-class User extends Eloquent implements UserInterface, RemindableInterface {
+class User extends Eloquent {
 
-	use UserTrait, RemindableTrait;
+	private static $registrationRules = [
+		'name' => 'required',
+		'email' => 'required|email|unique:users',
+		'password' => 'required|min:6|confirmed',
+		'password_confirmation' => 'required|min:6'
+	];
 
+	private static $loginRules = [
+		'email' => 'required|email',
+		'password' => 'required|min:6',
+	];
 
 	/**
 	 * @param $data
@@ -22,6 +31,12 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	public static function registration($data){
 		try
 		{
+			$validator = Validator::make( $data, User::$registrationRules);
+
+			if ($validator->fails()) {
+				return (object)['status' => false, 'errors' => $validator->messages()];
+			}
+
 			// Create the user
 			$user = Sentry::createUser(array(
 				'first_name'     => $data['name'],
@@ -30,7 +45,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 				'activated' => true,
 			));
 
-			return 1;
+			return (object)['status' => true, 'userID' => $user->getId()];
 
 //			// Find the group using the group id
 //			$adminGroup = Sentry::findGroupById(1);
@@ -40,20 +55,22 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		}
 		catch (Cartalyst\Sentry\Users\LoginRequiredException $e)
 		{
-			return 'Login field is required.';
+			$registrationError = 'Login field is required.';
 		}
 		catch (Cartalyst\Sentry\Users\PasswordRequiredException $e)
 		{
-			return 'Password field is required.';
+			$registrationError = 'Password field is required.';
 		}
 		catch (Cartalyst\Sentry\Users\UserExistsException $e)
 		{
-			return 'User with this login already exists.';
+			$registrationError = 'User with this login already exists.';
 		}
 		catch (Cartalyst\Sentry\Groups\GroupNotFoundException $e)
 		{
-			return 'Group was not found.';
+			$registrationError = 'Group was not found.';
 		}
+
+		return (object)['status' => false, 'errors' => ['password_confirmation' => $registrationError]];
 	}
 
 	/**
@@ -63,42 +80,48 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	public static function login($data) {
 		try
 		{
+			$validator = Validator::make( $data, User::$loginRules);
+
+			if ($validator->fails()) {
+				return (object)['status' => false, 'errors' => $validator->messages()];
+			}
 			// Authenticate the user
 			$user = Sentry::authenticate($data, true);
 
-//			$sentry->login($user, false);
-			return 1;
+			return (object)['status' => true, 'user' => Sentry::getUser()];
 		}
 		catch (Cartalyst\Sentry\Users\LoginRequiredException $e)
 		{
-			return 'Login field is required.';
+			$loginError = 'Login field is required.';
 		}
 		catch (Cartalyst\Sentry\Users\PasswordRequiredException $e)
 		{
-			return 'Password field is required.';
+			$loginError = 'Password field is required.';
 		}
 		catch (Cartalyst\Sentry\Users\WrongPasswordException $e)
 		{
-			return 'Wrong password, try again.';
+			$loginError = 'Wrong password, try again.';
 		}
 		catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
 		{
-			return 'User was not found.';
+			$loginError = 'User was not found.';
 		}
 		catch (Cartalyst\Sentry\Users\UserNotActivatedException $e)
 		{
-			return 'User is not activated.';
+			$loginError = 'User is not activated.';
 		}
 
 // The following is only required if the throttling is enabled
 		catch (Cartalyst\Sentry\Throttling\UserSuspendedException $e)
 		{
-			return 'User is suspended.';
+			$loginError = 'User is suspended.';
 		}
 		catch (Cartalyst\Sentry\Throttling\UserBannedException $e)
 		{
-			return 'User is banned.';
+			$loginError = 'User is banned.';
 		}
+
+		return (object)['status' => false, 'errors' => ['password' => $loginError]];
 	}
 
 	/**
@@ -120,6 +143,17 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
      */
 	public static function getCurrentUser(){
 		return Sentry::getUser();
+	}
+
+	/**
+	 * @return \Cartalyst\Sentry\Users\UserInterface
+     */
+	public static function getUserID(){
+		if(User::isLogin()){
+			return User::getCurrentUser()->getId();
+		}else{
+			return null;
+		}
 	}
 
 }

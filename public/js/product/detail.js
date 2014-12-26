@@ -8,7 +8,7 @@ $(document).ready(function(){
             event.preventDefault();
             $('.error-message').html('');
             $.post('/comment', {'comment': $('[name=comment]').val(), 'product_id': productID}, function(answ){
-                if(answ == 1){
+                if(answ >= 1){
                     $('[name=comment]').val('');
                     getComments();
                 } else {

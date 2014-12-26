@@ -27,32 +27,18 @@ class UserController extends BaseController {
 		header('location: /');
 	}
 
-
 	/**
 	 * @return array|\Illuminate\Support\MessageBag|int|string
      */
 	public function registration() {
 		$data = Input::all();
-		$validator = Validator::make(
-			$data,
-			[
-				'name' => 'required',
-				'email' => 'required|email|unique:users',
-				'password' => 'required|min:6|confirmed',
-        		'password_confirmation' => 'required|min:6'
-			]
-		);
+		$result = User::registration($data);
 
-		if ($validator->fails()) {
-			return Redirect::to('/registration')->withInput($data)->withErrors($validator);
-		} else {
-			$result = User::registration($data);
-			if($result == 1)
-				return Redirect::to('/');
-			else
-				return Redirect::to('/registration')->withInput($data)->withErrors(['password_confirmation' => $result]);
+		if($result->status){
+			return Redirect::to('/');
+		}else{
+			return Redirect::to('/registration')->withInput($data)->withErrors($result->errors);
 		}
-
 	}
 
 	/**
@@ -60,24 +46,13 @@ class UserController extends BaseController {
      */
 	public function login() {
 		$data = Input::all();
-		$validator = Validator::make(
-			$data,
-			[
-				'email' => 'required|email',
-				'password' => 'required|min:6',
-			]
-		);
+		$result = User::login($data);
 
-		if ($validator->fails()) {
-			return Redirect::to('/login')->withInput($data)->withErrors($validator);
-		} else {
-			$result = User::login($data);
-			if($result == 1)
-				return Redirect::to('/');
-			else
-				return Redirect::to('/login')->withInput($data)->withErrors(['password' => $result]);
+		if($result->status){
+			return Redirect::to('/');
+		}else{
+			return Redirect::to('/login')->withInput($data)->withErrors($result->errors);
 		}
-
 	}
 
 }

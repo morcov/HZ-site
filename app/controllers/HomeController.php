@@ -1,6 +1,5 @@
 <?php
 
-use Cartalyst\Sentry\Sentry;
 class HomeController extends BaseController {
 
 	/*

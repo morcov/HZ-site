@@ -23,6 +23,14 @@ class ProductController extends BaseController {
     }
 
     /**
+     * @return \Illuminate\View\View
+     */
+    public function editAction($id){
+        return Redirect::to('/');
+        return View::make('product::edit')->with('input', Product::getByID($id));
+    }
+
+    /**
      * @param $id
      * @return $this
      */
@@ -37,25 +45,20 @@ class ProductController extends BaseController {
      */
     public function addProduct(){
         $data = Input::all();
-        $validator = Validator::make(
-            $data,
-            [
-                'name' => 'required',
-                'name_en' => '',
-                'name_ua' => '',
-                'year' => 'integer',
-                'time' => '',
-                'series' => 'integer',
-                'description' => '',
-            ]
-        );
-
-        if ($validator->fails()) {
-            return Redirect::action('ProductController@addAction')->withInput($data)->withErrors($validator);
-        } else {
-            Product::add($data);
-            return Redirect::to('/');
+        $result = Product::add($data);
+        if($result->status){
+            return Redirect::to('/product/'.$result->productID);
+        }else{
+            return Redirect::to('/product/add')->withInput($data)->withErrors($result->errors);
         }
+    }
+
+    /**
+     * @return array|\Illuminate\Support\MessageBag|int|string
+     */
+    public function editProduct(){
+        $data = Input::all();
+        return $data;
     }
 
     /**
@@ -63,20 +66,13 @@ class ProductController extends BaseController {
      */
     public function addComment(){
         $data = Input::all();
-        $validator = Validator::make(
-            $data,
-            [
-                'product_id' => 'integer|required',
-                'comment' => 'required',
-            ]
-        );
+        $data['user_id'] = User::getUserID();
 
-        if ($validator->fails()) {
-            return $validator->messages();
-        } else {
-            $data['user_id'] = User::getCurrentUser()->getId();
-            $result = Comment::add($data);
-            return $result;
+        $result = Comment::add($data);
+        if($result->status){
+            return $result->commentID;
+        }else{
+            return $result->errors;
         }
     }
 
@@ -85,18 +81,8 @@ class ProductController extends BaseController {
      */
     public function getComments(){
         $data = Input::all();
-        $validator = Validator::make(
-            $data,
-            [
-                'product_id' => 'integer|required',
-            ]
-        );
-
-        if ($validator->fails()) {
-            return null;
-        } else {
-            return View::make('product::comments')->with('comments', Comment::getByProductID($data['product_id']));
-        }
+        $result = Comment::getByProductID($data['product_id']);
+        return View::make('product::comments')->with('comments', $result);
     }
 
     /**
@@ -104,17 +90,6 @@ class ProductController extends BaseController {
      */
     public function deleteComment(){
         $data = Input::all();
-        $validator = Validator::make(
-            $data,
-            [
-                'comment_id' => 'integer|required',
-            ]
-        );
-
-        if ($validator->fails()) {
-            return 0;
-        } else {
-            return Comment::remove($data['comment_id']);
-        }
+        Response::json(Comment::remove($data['comment_id']));
     }
 }

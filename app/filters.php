@@ -12,6 +12,8 @@
 */
 
 App::before(function($request) {
+	LocalController::setLocale();
+	View::share('locale', LocalController::localeTemplate());
 	View::share('isLogin', User::isLogin());
 	View::share('currentUser', User::getCurrentUser());
 });

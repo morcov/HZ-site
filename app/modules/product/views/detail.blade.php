@@ -1,54 +1,54 @@
 @extends('master')
 
 @section('title')
-    Product "{{ $product->name }}"
+    {{ Lang::get('lang.Product name', ['name' => $product->name]) }}
 @stop
 
 @section('content')
     <div class="form">
-        <h3>Product "{{ $product->name }}"</h3>
+        <h3>{{ Lang::get('lang.Product name', ['name' => $product->name])  }}</h3><span>{{ HTML::link('/product/edit/'.$product->id, Lang::get('lang.Edit')) }}</span>
         <p>
-            <span>Name: </span>{{ $product->name }}
+            <span>{{ Lang::get('lang.Name') }}: </span>{{ $product->name }}
         </p>
     @if(!empty($product->name_en))
         <p>
-            <span>Name EN: </span> {{ $product->name_en }}
+            <span>{{ Lang::get('lang.Name EN') }}: </span> {{ $product->name_en }}
         </p>
     @endif
     @if(!empty($product->name_ua))
         <p>
-            <span>Name UA: </span> {{ $product->name_ua }}
+            <span>{{ Lang::get('lang.Name UA') }}: </span> {{ $product->name_ua }}
         </p>
     @endif
     @if(!empty($product->year))
         <p>
-            <span>Year: </span> {{ $product->year }}
+            <span>{{ Lang::get('lang.Year') }}: </span> {{ $product->year }}
         </p>
     @endif
     @if(!empty($product->time))
         <p>
-            <span>Time: </span> {{ $product->time }}
+            <span>{{ Lang::get('lang.Time') }}: </span> {{ $product->time }}
         </p>
     @endif
     @if(!empty($product->series))
         <p>
-            <span>Series: </span> {{ $product->series }}
+            <span>{{ Lang::get('lang.Series') }}: </span> {{ $product->series }}
         </p>
     @endif
     @if(!empty($product->description))
         <p>
-            <span>Description: </span> {{ $product->description }}
+            <span>{{ Lang::get('lang.Description') }}: </span> {{ $product->description }}
         </p>
     @endif
         -----------------------------------------------
     @if($isLogin)
         <form class="form-comment">
             <p>
-                <span>Comment: </span>
+                <span>{{ Lang::get('lang.Comment') }}: </span>
                 <textarea name="comment"></textarea>
             <div class="error-message comment"></div>
             </p>
-            <p><a href="#" id="send-comment">Add comment</a></p>
+            <p><a href="#" id="send-comment">{{ Lang::get('lang.Add comment') }}</a></p>
         </form>
     @endif
         <div class="comments">
@@ -56,7 +56,7 @@
         </div>
         -----------------------------------------------
 
-        <p>{{ HTML::linkAction('ProductController@indexAction', 'Back') }}</p>
+        <p>{{ HTML::linkAction('ProductController@indexAction', Lang::get('lang.Back')) }}</p>
     </div>
 @stop
 
