@@ -1,25 +1,45 @@
 <?php
 
-class LocalController extends BaseController {
+/**
+ * Class LocalController
+ */
+class LocalController extends BaseController
+{
 
-	public function changeLocale( $locale ){
-		Session::set('locale', trim($locale));
-		return Redirect::to('/');
-	}
+    /**
+     * Edit locale
+     *
+     * @param $locale
+     * @return Redirect
+     */
+    public function changeLocale($locale)
+    {
+        Session::set('locale', trim($locale));
+        return Redirect::to('/');
+    }
 
-	public static function setLocale(){
-		App::setLocale(Session::get('locale'));
-	}
+    /**
+     * Set locale
+     */
+    public static function setLocale()
+    {
+        App::setLocale(Session::get('locale'));
+    }
 
-	public static function localeTemplate(){
-		$local = [
-			'en' => 'en',
-			'uk' => 'ua',
-			'ru' => 'ru',
-		];
-		unset($local[App::getLocale()]) ;
+    /**
+     * get locale template
+     * @return $this
+     */
+    public static function localeTemplate()
+    {
+        $local = [
+            'en' => 'en',
+            'uk' => 'ua',
+            'ru' => 'ru',
+        ];
+        unset($local[App::getLocale()]);
 
-		return View::make('locale')->with('locale', $local);
-	}
+        return View::make('locale')->with('locale', $local);
+    }
 
 }

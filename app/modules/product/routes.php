@@ -4,7 +4,7 @@ $prefix = 'App\Modules\Product\Controllers\\';
 
 Route::get('/', $prefix . 'ProductController@indexAction');
 
-Route::group(array('before' => 'NotLogged'), function() use($prefix) {
+Route::group(array('before' => 'NotLogged'), function () use ($prefix) {
     Route::get('/product/add', $prefix . 'ProductController@addAction');
     Route::post('/product/add', $prefix . 'ProductController@addProduct');
 

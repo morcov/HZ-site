@@ -5,18 +5,26 @@ namespace App\Modules\Product\Controllers;
 use App\Modules\Product\Models\Product;
 use BaseController, View, Input, Redirect;
 
+/**
+ * Class ProductController
+ * @package App\Modules\Product\Controllers
+ */
 class ProductController extends BaseController
 {
     /**
-     * @return $this
+     * Home page
+     *
+     * @return View
      */
     public function indexAction()
     {
-		return View::make('product::index')->with('products', Product::getAll());
-	}
+        return View::make('product::index')->with('products', Product::getAll());
+    }
 
     /**
-     * @return \Illuminate\View\View
+     * Form add product
+     *
+     * @return View
      */
     public function addAction()
     {
@@ -24,18 +32,24 @@ class ProductController extends BaseController
     }
 
     /**
-     * @return \Illuminate\View\View
+     * Form edit product
+     *
+     * @return View
      */
-    public function editAction($id){
+    public function editAction($id)
+    {
         return View::make('product::edit')->with('product', Product::getByID($id));
     }
 
 
     /**
+     * Page view product by id
+     *
      * @param $id
-     * @return $this|int
+     * @return View
      */
-    public function detailAction($id){
+    public function detailAction($id)
+    {
         return View::make('product::detail')
             ->with('product', Product::getByID($id))
             ->with('comments', (new CommentController())->getComments($id));
@@ -43,27 +57,33 @@ class ProductController extends BaseController
 
 
     /**
-     * @return $this|\Illuminate\Http\RedirectResponse
+     * Add product
+     *
+     * @return Redirect
      */
-    public function addProduct(){
+    public function addProduct()
+    {
         $data = Input::all();
         $result = Product::add($data);
-        if($result->status){
-            return Redirect::to('/product/'.$result->productID);
-        }else{
+        if ($result->status) {
+            return Redirect::to('/product/' . $result->productID);
+        } else {
             return Redirect::to('/product/add')->withInput($data)->withErrors($result->errors);
         }
     }
 
     /**
-     * @return array
+     * Edit product
+     *
+     * @return Redirect
      */
-    public function editProduct($id){
+    public function editProduct($id)
+    {
         $data = Input::all();
         $result = Product::edit($id, $data);
-        if($result->status){
-            return Redirect::to('/product/'.$result->productID);
-        }else {
+        if ($result->status) {
+            return Redirect::to('/product/' . $result->productID);
+        } else {
             return Redirect::to('/product/' . $id . '/edit')->withInput($data)->withErrors($result->errors);
         }
     }

@@ -6,10 +6,17 @@ use BaseController, Input, View, Response;
 use App\Modules\Product\Models\Comment;
 use App\Modules\User\Models\User;
 
+/**
+ * Class CommentController
+ * @package App\Modules\Product\Controllers
+ */
 class CommentController extends BaseController
 {
+
     /**
-     * @return array|\Illuminate\Support\MessageBag|int|string
+     * Add comment
+     *
+     * @return mixed
      */
     public function addComment()
     {
@@ -24,8 +31,12 @@ class CommentController extends BaseController
         }
     }
 
+
     /**
-     * @return $this|null
+     * Get comments by productID
+     *
+     * @param null $productID
+     * @return View
      */
     public function getComments($productID = null)
     {
@@ -36,7 +47,10 @@ class CommentController extends BaseController
     }
 
     /**
-     * @return int
+     * Delete comment by commentID
+     *
+     * @param null $commentID
+     * @return boolean
      */
     public function deleteComment($commentID = null)
     {

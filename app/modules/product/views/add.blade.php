@@ -12,5 +12,5 @@
 @stop
 
 @section('javascript')
-{{--    {{ HTML::script('js/product/add.js') }}--}}
+    {{--    {{ HTML::script('js/product/add.js') }}--}}
 @stop

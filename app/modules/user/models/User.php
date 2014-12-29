@@ -2,6 +2,8 @@
 
 namespace App\Modules\User\Models;
 
+use Eloquent, Validator, Sentry;
+use \Cartalyst\Sentry\Users\UserInterface;
 use Cartalyst\Sentry\Groups\GroupNotFoundException;
 use Cartalyst\Sentry\Throttling\UserBannedException;
 use Cartalyst\Sentry\Throttling\UserSuspendedException;
@@ -11,158 +13,143 @@ use Cartalyst\Sentry\Users\UserExistsException;
 use Cartalyst\Sentry\Users\UserNotActivatedException;
 use Cartalyst\Sentry\Users\UserNotFoundException;
 use Cartalyst\Sentry\Users\WrongPasswordException;
-use Eloquent, Exception, Validator, Sentry;
 
-class User extends Eloquent {
+/**
+ * Class User
+ * @package App\Modules\User\Models
+ */
+class User extends Eloquent
+{
 
-	/**
-	 * @var array
+    /**
+     * @var array
      */
-	private static $registrationRules = [
-		'name' => 'required',
-		'email' => 'required|email|unique:users',
-		'password' => 'required|min:6|confirmed',
-		'password_confirmation' => 'required|min:6'
-	];
+    private static $registrationRules = [
+        'name' => 'required',
+        'email' => 'required|email|unique:users',
+        'password' => 'required|min:6|confirmed',
+        'password_confirmation' => 'required|min:6'
+    ];
 
-	/**
-	 * @var array
+    /**
+     * @var array
      */
-	private static $loginRules = [
-		'email' => 'required|email',
-		'password' => 'required|min:6',
-	];
+    private static $loginRules = [
+        'email' => 'required|email',
+        'password' => 'required|min:6',
+    ];
 
-	/**
-	 * @param $data
-	 * @return int|string
+    /**
+     * @param $data
+     * @return object
      */
-	public static function registration($data){
-		try
-		{
-			$validator = Validator::make( $data, User::$registrationRules);
+    public static function registration($data)
+    {
+        try {
+            $validator = Validator::make($data, User::$registrationRules);
 
-			if ($validator->fails()) {
-				return (object)['status' => false, 'errors' => $validator->messages()];
-			}
+            if ($validator->fails()) {
+                return (object)['status' => false, 'errors' => $validator->messages()];
+            }
 
-			// Create the user
-			$user = Sentry::createUser(array(
-				'first_name'     => $data['name'],
-				'email'     => $data['email'],
-				'password'  => $data['password'],
-				'activated' => true,
-			));
+            // Create the user
+            $user = Sentry::createUser(array(
+                'first_name' => $data['name'],
+                'email' => $data['email'],
+                'password' => $data['password'],
+                'activated' => true,
+            ));
 
-			return (object)['status' => true, 'userID' => $user->getId()];
+            return (object)['status' => true, 'userID' => $user->getId()];
 
 //			// Find the group using the group id
 //			$adminGroup = Sentry::findGroupById(1);
 //
 //			// Assign the group to the user
 //			$user->addGroup($adminGroup);
-		}
-		catch (LoginRequiredException $e)
-		{
-			$registrationError = 'Login field is required.';
-		}
-		catch (PasswordRequiredException $e)
-		{
-			$registrationError = 'Password field is required.';
-		}
-		catch (UserExistsException $e)
-		{
-			$registrationError = 'User with this login already exists.';
-		}
-		catch (GroupNotFoundException $e)
-		{
-			$registrationError = 'Group was not found.';
-		}
+        } catch (LoginRequiredException $e) {
+            $registrationError = 'Login field is required.';
+        } catch (PasswordRequiredException $e) {
+            $registrationError = 'Password field is required.';
+        } catch (UserExistsException $e) {
+            $registrationError = 'User with this login already exists.';
+        } catch (GroupNotFoundException $e) {
+            $registrationError = 'Group was not found.';
+        }
 
-		return (object)['status' => false, 'errors' => ['password_confirmation' => $registrationError]];
-	}
+        return (object)['status' => false, 'errors' => ['password_confirmation' => $registrationError]];
+    }
 
-	/**
-	 * @param $data
-	 * @return int|string
+    /**
+     * @param $data
+     * @return object
      */
-	public static function login($data) {
-		try
-		{
-			$validator = Validator::make( $data, User::$loginRules);
+    public static function login($data)
+    {
+        try {
+            $validator = Validator::make($data, User::$loginRules);
 
-			if ($validator->fails()) {
-				return (object)['status' => false, 'errors' => $validator->messages()];
-			}
-			// Authenticate the user
-			$user = Sentry::authenticate($data, true);
+            if ($validator->fails()) {
+                return (object)['status' => false, 'errors' => $validator->messages()];
+            }
+            // Authenticate the user
+            $user = Sentry::authenticate($data, true);
 
-			return (object)['status' => true, 'user' => Sentry::getUser()];
-		}
-		catch (LoginRequiredException $e)
-		{
-			$loginError = 'Login field is required.';
-		}
-		catch (PasswordRequiredException $e)
-		{
-			$loginError = 'Password field is required.';
-		}
-		catch (WrongPasswordException $e)
-		{
-			$loginError = 'Wrong password, try again.';
-		}
-		catch (UserNotFoundException $e)
-		{
-			$loginError = 'User was not found.';
-		}
-		catch (UserNotActivatedException $e)
-		{
-			$loginError = 'User is not activated.';
-		}
+            return (object)['status' => true, 'user' => Sentry::getUser()];
+        } catch (LoginRequiredException $e) {
+            $loginError = 'Login field is required.';
+        } catch (PasswordRequiredException $e) {
+            $loginError = 'Password field is required.';
+        } catch (WrongPasswordException $e) {
+            $loginError = 'Wrong password, try again.';
+        } catch (UserNotFoundException $e) {
+            $loginError = 'User was not found.';
+        } catch (UserNotActivatedException $e) {
+            $loginError = 'User is not activated.';
+        } // The following is only required if the throttling is enabled
+        catch (UserSuspendedException $e) {
+            $loginError = 'User is suspended.';
+        } catch (UserBannedException $e) {
+            $loginError = 'User is banned.';
+        }
 
-// The following is only required if the throttling is enabled
-		catch (UserSuspendedException $e)
-		{
-			$loginError = 'User is suspended.';
-		}
-		catch (UserBannedException $e)
-		{
-			$loginError = 'User is banned.';
-		}
+        return (object)['status' => false, 'errors' => ['password' => $loginError]];
+    }
 
-		return (object)['status' => false, 'errors' => ['password' => $loginError]];
-	}
-
-	/**
-	 *
+    /**
+     *
      */
-	public static function logout(){
-		Sentry::logout();
-	}
+    public static function logout()
+    {
+        Sentry::logout();
+    }
 
-	/**
-	 * @return bool
+    /**
+     * @return bool
      */
-	public static function isLogin(){
-		return Sentry::check();
-	}
+    public static function isLogin()
+    {
+        return Sentry::check();
+    }
 
-	/**
-	 * @return \Cartalyst\Sentry\Users\UserInterface
+    /**
+     * @return UserInterface
      */
-	public static function getCurrentUser(){
-		return Sentry::getUser();
-	}
+    public static function getCurrentUser()
+    {
+        return Sentry::getUser();
+    }
 
-	/**
-	 * @return \Cartalyst\Sentry\Users\UserInterface
+    /**
+     * @return mixed|null
      */
-	public static function getUserID(){
-		if(User::isLogin()){
-			return User::getCurrentUser()->getId();
-		}else{
-			return null;
-		}
-	}
+    public static function getUserID()
+    {
+        if (User::isLogin()) {
+            return User::getCurrentUser()->getId();
+        } else {
+            return null;
+        }
+    }
 
 }
